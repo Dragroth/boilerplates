@@ -1,0 +1,34 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: us
+  ssh:
+    install-server: true
+    allow-pw: true
+    disable_root: true
+    ssh_quiet_keygen: true
+    allow_public_ssh_keys: true
+  packages:
+    - qemu-guest-agent
+    - sudo
+    - vim
+    - neofetch
+  storage:
+    layout:
+      name: lvm
+    swap:
+      size: 2G
+  user-data:
+    package_upgrade: true
+    timezone: Europe/Warsaw
+    users:
+      - name: ubuntu
+        groups: [adm, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8f2gLQOHg2Xnnf9EyZ1A8eL1nyCh0+aZpBxj9eRowF gkk@gkk-pc
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH/zzGElglUoqeFr+siF/lulMl8kHGFwTMQcFhV3PWaH root@tool
