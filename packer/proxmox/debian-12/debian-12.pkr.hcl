@@ -30,7 +30,17 @@ variable "proxmox_api_token_secret" {
 # VM variables
 variable "iso_file" {
   type    = string
-  default = "local:iso/debian-12.1.0-amd64-netinst.iso"
+  default = "local:iso/debian-12.5.0-amd64-netinst.iso"
+}
+
+variable "iso_url" {
+  type    = string
+  default = "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.5.0-amd64-netinst.iso"
+}
+
+variable "iso_checksum" {
+  type    = string
+  default = "013f5b44670d81280b5b1bc02455842b250df2f0c6763398feb69af1a805a14f"
 }
 
 variable "cloudinit_storage_pool" {
@@ -82,8 +92,8 @@ source "proxmox-iso" "debian-12" {
   qemu_agent            = true
 
   # ISO file
-  iso_url               = "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.1.0-amd64-netinst.iso"
-  iso_checksum          = "9f181ae12b25840a508786b1756c6352a0e58484998669288c4eec2ab16b8559"
+  iso_url               = var.iso_url
+  iso_checksum          = var.iso_checksum
   iso_storage_pool      = "local"
   unmount_iso           = true
 

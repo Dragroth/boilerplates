@@ -33,6 +33,16 @@ variable "iso_file" {
   default = "local:iso/ubuntu-22.04.3-live-server-amd64.iso"
 }
 
+variable "iso_url" {
+  type    = string
+  default = "https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso"
+}
+
+variable "iso_checksum" {
+  type    = string
+  default = "45f873de9f8cb637345d6e66a583762730bbea30277ef7b32c9c3bd6700a32b2"
+}
+
 variable "cloudinit_storage_pool" {
   type    = string
   default = "local-lvm"
@@ -82,8 +92,8 @@ source "proxmox-iso" "ubuntu-server" {
   qemu_agent            = true
 
   # ISO file
-  iso_url               = "https://releases.ubuntu.com/jammy/ubuntu-22.04.3-live-server-amd64.iso"
-  iso_checksum          = "a4acfda10b18da50e2ec50ccaf860d7f20b389df8765611142305c0e911d16fd"
+  iso_url               = var.iso_url
+  iso_checksum          = var.iso_checksum
   iso_storage_pool      = "local"
   unmount_iso           = true
 
