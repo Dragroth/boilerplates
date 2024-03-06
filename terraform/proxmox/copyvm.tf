@@ -11,26 +11,31 @@ resource "proxmox_virtual_environment_vm" "name" {
 	}
 
 	clone {
-		datastore_id = "local-lvm"
-		retries		= 3
-		vm_id		= 8010
-		full		= true
+		# Cloned template data
+		datastore_id	= "local-lvm"
+		retries			= 3
+		vm_id			= 8010
+		full			= true
 	}
 
 	cpu {
-	  cores = 2
-	  type = "host"
+		# Number of cores (and type)
+		cores	= 2
+		type	= "host"
 	}
 
 	memory {
-	  dedicated = 1024
+		# Memory size
+		dedicated = 1024
 	}
 
 	network_device {
+		# Bridge name
     	bridge = "vmbr100"
   	}
 
 	disk {
+		# Disk size and datastore (this is cloned disk, it allows managing it via terraform later)
     	datastore_id	= "local-lvm"
     	interface		= "scsi0"
 		size			= "8"
