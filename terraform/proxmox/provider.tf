@@ -14,8 +14,8 @@ variable "proxmox_api_url" {
 }
 
 variable "proxmox_api_token_secret" {
-	type            = string
-	sensitive       = true
+	type = string
+	sensitive = true
 }
 
 provider "proxmox" {
@@ -23,7 +23,7 @@ endpoint  = var.proxmox_api_url
 	api_token = var.proxmox_api_token_secret
 	insecure  = false
 	ssh {
-		agent    = true
+		agent = true
 		username = "root"
 	}
 }
