@@ -90,6 +90,12 @@ source "proxmox-iso" "ubuntu-server" {
 	memory = "2048"
 	cpu_type = "host"
 	qemu_agent = true
+	bios = "ovmf"
+	machine = "q35"
+
+	efi_config {
+		efi_storage_pool = var.storage_pool
+	}
 
 	# ISO file
 	iso_url = var.iso_url
@@ -118,7 +124,7 @@ source "proxmox-iso" "ubuntu-server" {
 
 	# PACKER Boot Commands
 	boot_command = [
-		"<esc><wait>",
+		"<wait>",
 		"e<wait>",
 		"<down><down><down><end>",
 		"<bs><bs><bs><bs><wait>",
@@ -132,6 +138,7 @@ source "proxmox-iso" "ubuntu-server" {
 	http_directory = "http" 
 	ssh_username = "ubuntu"
 	ssh_private_key_file = "~/.ssh/id_ed25519"
+	# ssh_password = "packer" # temporary password
 	ssh_timeout = "20m"
 }
 

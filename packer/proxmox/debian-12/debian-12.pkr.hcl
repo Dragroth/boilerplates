@@ -90,7 +90,6 @@ source "proxmox-iso" "debian-12" {
 	memory = "2048"
 	cpu_type = "host"
 	qemu_agent = true
-
 	bios = "ovmf"
 	machine = "q35"
 	
