@@ -91,6 +91,13 @@ source "proxmox-iso" "debian-12" {
 	cpu_type = "host"
 	qemu_agent = true
 
+	bios = "ovmf"
+	machine = "q35"
+	
+	efi_config {
+		efi_storage_pool = var.storage_pool
+	}
+
 	# ISO file
 	iso_url = var.iso_url
 	iso_checksum = var.iso_checksum
@@ -118,9 +125,11 @@ source "proxmox-iso" "debian-12" {
 
 	# PACKER Boot Commands
 	boot_command = [
-		"<down><down><down><down>",
-		"<wait><enter>",
-		"<wait>auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<enter>"
+		"<<wait>",
+		"<down><down><enter><wait>",
+		"<down><down><down><down><down>e<wait>",
+		"<down><down><down><end>",
+		"auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<f10>"
 	]
 	boot = "c"
 	boot_wait = "5s"
