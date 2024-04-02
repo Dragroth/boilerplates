@@ -30,5 +30,5 @@ autoinstall:
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
         ssh_authorized_keys:
-          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8f2gLQOHg2Xnnf9EyZ1A8eL1nyCh0+aZpBxj9eRowF gkk@gkk-pc
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMNknZMt1Q8oPa5rzXM7zo5OV7LjMGB1FZm2MaT+nXCh gkk@gkk-pc
           - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDrRX2T9XSKvtw4Zv91fi9ZJvSmqYkfoSqCuRsO92D6 arch@tool
