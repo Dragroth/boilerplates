@@ -17,7 +17,7 @@ cores           = "2"
 memory          = "2048"
 disk_size       = "10G"
 swap_size       = "2G"
-country         = "country=PL"
+country         = "country=PL" # used for mirrorlist
 timezone        = "Europe/Warsaw"
 language        = "en_US.UTF-8"
 optional_packages = "vim intel-ucode less nano neofetch"

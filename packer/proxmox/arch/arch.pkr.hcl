@@ -27,7 +27,7 @@ variable "proxmox_api_token_secret" {
     sensitive = true
 }
 
-# VM variables
+# ISO variables
 variable "iso_file" {
     type = string
     default = "local:iso/archlinux-x86_64.iso"
@@ -43,6 +43,7 @@ variable "iso_checksum" {
     default = "0062e39e57d492672712467fdb14371fca4e3a5c57fed06791be95da8d4a60e3"
 }
 
+# VM variables
 variable "cloudinit_storage_pool" {
     type = string
     default = "local-lvm"
@@ -93,16 +94,6 @@ variable "swap_size" {
     default = "4G"
 }
 
-variable "country" {
-    type = string
-    default = "country=US"
-}
-
-variable "timezone" {
-    type = string
-    default = "America/Los_Angeles"
-}
-
 variable "language" {
     type = string
     default = "en_US.UTF-8"
@@ -111,6 +102,16 @@ variable "language" {
 variable "optional_packages" {
     type = string
     default = "vim"
+}
+
+variable "country" {
+    type = string
+    default = "country=US"
+}
+
+variable "timezone" {
+    type = string
+    default = "America/Los_Angeles"
 }
 
 source "proxmox-iso" "arch" {
@@ -193,11 +194,11 @@ build {
 
     provisioner "shell" {
         inline = [
+            "timedatectl set-timezone ${var.timezone}",
             "rm /etc/ssh/ssh_host_*",
             "rm -f /etc/machine-id /var/lib/dbus/machine-id",
             "dbus-uuidgen --ensure=/etc/machine-id",
             "dbus-uuidgen --ensure",
-            "timedatectl set-timezone ${var.timezone}",
             "cloud-init clean",
             "/usr/bin/pacman -Scc --noconfirm",
             "usermod -p '!' root"
