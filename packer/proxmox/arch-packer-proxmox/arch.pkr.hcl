@@ -1,6 +1,6 @@
 # Arch Linux
 # ---
-# Packer Template to create Rocky 9 on Proxmox
+# Packer Template to create Arch Linux on Proxmox
 
 packer {
     required_plugins {
@@ -35,12 +35,12 @@ variable "iso_file" {
  
 variable "iso_url" {
     type = string
-    default = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.3-x86_64-minimal.iso"
+    default = "https://mirror2.evolution-host.com/archlinux/iso/2024.03.01/archlinux-x86_64.iso"
 }
 
 variable "iso_checksum" {
     type = string
-    default = "eef8d26018f4fcc0dc101c468f65cbf588f2184900c556f243802e9698e56729"
+    default = "0062e39e57d492672712467fdb14371fca4e3a5c57fed06791be95da8d4a60e3"
 }
 
 variable "cloudinit_storage_pool" {
@@ -163,7 +163,10 @@ source "proxmox-iso" "arch" {
     cloud_init_storage_pool = var.cloudinit_storage_pool
 
     # PACKER Boot Commands
-    boot_command = ["<tab> text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/inst.ks<enter><wait>"]
+    boot_command = [
+        "<enter><wait40s>",
+        "curl -sSl http://{{ .HTTPIP }}:{{ .HTTPPort }}/install.sh | bash -s -- 'packer' '${var.swap_size}' '${var.country}' '${var.timezone}' '${var.language}'  '${var.optional_packages}'<enter>"
+    ]
     boot = "c"
     boot_wait = "8s"
 
