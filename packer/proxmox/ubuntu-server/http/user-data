@@ -13,8 +13,6 @@ autoinstall:
   packages:
     - qemu-guest-agent
     - sudo
-    - vim
-    - neofetch
   storage:
     layout:
       name: lvm

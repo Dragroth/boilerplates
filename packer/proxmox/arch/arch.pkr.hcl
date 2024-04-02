@@ -94,14 +94,14 @@ variable "swap_size" {
     default = "4G"
 }
 
-variable "language" {
-    type = string
-    default = "en_US.UTF-8"
-}
-
 variable "optional_packages" {
     type = string
     default = "vim"
+}
+
+variable "language" {
+    type = string
+    default = "en_US.UTF-8"
 }
 
 variable "country" {
@@ -201,7 +201,7 @@ build {
             "dbus-uuidgen --ensure",
             "cloud-init clean",
             "/usr/bin/pacman -Scc --noconfirm",
-            "usermod -p '!' root"
+            "usermod -p '!' root" # disable root password login
             "sync"
         ]
     }

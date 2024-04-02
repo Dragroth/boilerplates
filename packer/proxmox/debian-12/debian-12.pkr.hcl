@@ -94,24 +94,9 @@ variable "swap_size" {
     default = "4G"
 }
 
-variable "language" {
-    type = string
-    default = "en_US.UTF-8"
-}
-
 variable "optional_packages" {
     type = string
     default = "vim"
-}
-
-variable "country" {
-    type = string
-    default = "country=US"
-}
-
-variable "timezone" {
-    type = string
-    default = "America/Los_Angeles"
 }
 
 source "proxmox-iso" "debian-12" {
@@ -187,7 +172,7 @@ build {
 
     provisioner "shell" {
         inline = [
-            "apt-get install ${var.extra_packages}"
+            "apt-get install ${var.optional_packages}"
             "timedatectl set-timezone ${var.timezone}",
             "rm /etc/ssh/ssh_host_*",
             "rm -f /etc/machine-id /var/lib/dbus/machine-id",

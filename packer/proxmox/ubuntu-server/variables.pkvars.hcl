@@ -1,8 +1,8 @@
 ###  ISO ###
 # You can use either iso_file or iso_url
 # iso_file        = "local:iso/archlinux-2024.03.01-x86_64.iso"
-iso_url         = "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.5.0-amd64-netinst.iso"
-iso_checksum    = "013f5b44670d81280b5b1bc02455842b250df2f0c6763398feb69af1a805a14f"
+iso_url         = "https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso"
+iso_checksum    = "45f873de9f8cb637345d6e66a583762730bbea30277ef7b32c9c3bd6700a32b2"
 
 ### PVE ###
 proxmox_node            = "hv01"
@@ -11,7 +11,7 @@ cloudinit_storage_pool  = "local-lvm"
 
 ### VM ###
 cpu_type        = "host"
-vm_id           = "8010"
+vm_id           = "8000"
 bridge_name     = "vmbr100"
 cores           = "2"
 memory          = "2048"

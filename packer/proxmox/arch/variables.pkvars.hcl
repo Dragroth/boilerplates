@@ -9,7 +9,7 @@ proxmox_node            = "hv01"
 storage_pool            = "local-lvm"
 cloudinit_storage_pool  = "local-lvm"
 
-# VM
+### VM ###
 cpu_type        = "host"
 vm_id           = "8020"
 bridge_name     = "vmbr100"

@@ -27,7 +27,7 @@ variable "proxmox_api_token_secret" {
     sensitive = true
 }
 
-# VM variables
+# ISO variables
 variable "iso_file" {
     type = string
     default = "local:iso/ubuntu-22.04.3-live-server-amd64.iso"
@@ -43,6 +43,7 @@ variable "iso_checksum" {
     default = "45f873de9f8cb637345d6e66a583762730bbea30277ef7b32c9c3bd6700a32b2"
 }
 
+# VM variables
 variable "cloudinit_storage_pool" {
     type = string
     default = "local-lvm"
@@ -50,7 +51,7 @@ variable "cloudinit_storage_pool" {
 
 variable "proxmox_node" {
     type = string
-    default = "hv01"
+    default = "pve"
 }
 
 variable "storage_pool" {
@@ -65,12 +66,37 @@ variable "cpu_type" {
 
 variable "vm_id" {
     type = string
-    default = "8000"
+    default = "9997"
 }
 
 variable "bridge_name" {
     type = string
-    default = "vmbr100"
+    default = "vmbr0"
+}
+
+variable "cores" {
+    type = string
+    default = "1"
+}
+
+variable "memory" {
+    type = string
+    default = "1024"
+}
+
+variable "disk_size" {
+    type = string
+    default = "30G"
+}
+
+variable "swap_size" {
+    type = string
+    default = "4G"
+}
+
+variable "optional_packages" {
+    type = string
+    default = "vim"
 }
 
 source "proxmox-iso" "ubuntu-server" {
@@ -86,9 +112,9 @@ source "proxmox-iso" "ubuntu-server" {
     vm_id = var.vm_id
     vm_name = "ubuntu-server"
     template_description = "Built from ${basename(var.iso_file)} on ${formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())}"
-    cores = "2"
-    memory = "2048"
-    cpu_type = "host"
+    cores = var.cores
+    memory = var.memory
+    cpu_type = var.cpu_type
     qemu_agent = true
     bios = "ovmf"
     machine = "q35"
@@ -106,7 +132,7 @@ source "proxmox-iso" "ubuntu-server" {
     # VM Hard Disk Settings
     scsi_controller = "virtio-scsi-single"
     disks {
-        disk_size = "10G"
+        disk_size = var.disk_size
         storage_pool = var.storage_pool
         type = "scsi"
       }
@@ -137,8 +163,8 @@ source "proxmox-iso" "ubuntu-server" {
     # PACKER Autoinstall Settings
     http_directory = "http" 
     ssh_username = "ubuntu"
-    # ssh_private_key_file = "~/.ssh/id_ed25519"
-    ssh_password = "packer" # temporary password
+    ssh_private_key_file = "~/.ssh/id_ed25519"
+    # ssh_password = "packer" # temporary password
     ssh_timeout = "20m"
 }
 
@@ -149,6 +175,7 @@ build {
     provisioner "shell" {
         inline = [
             "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+            "apt-get install ${var.optional_packages}"
             "sudo rm /etc/ssh/ssh_host_*",
             "sudo truncate -s 0 /etc/machine-id",
             "sudo apt-get -y autoremove --purge",
