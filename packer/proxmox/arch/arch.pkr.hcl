@@ -182,16 +182,6 @@ build {
     name = "arch"
     sources = ["source.proxmox-iso.arch"]
 
-    provisioner "file" {
-        destination = "/etc/cloud/cloud.cfg"
-        source = "files/cloud.cfg"
-    }
-        
-    provisioner "file" {
-        destination = "/etc/cloud/99-pve.cfg"
-        source = "files/99-pve.cfg"
-    }
-
     provisioner "shell" {
         inline = [
             "timedatectl set-timezone ${var.timezone}",
@@ -201,7 +191,7 @@ build {
             "dbus-uuidgen --ensure",
             "cloud-init clean",
             "/usr/bin/pacman -Scc --noconfirm",
-            "usermod -p '!' root" # disable root password login
+            "usermod -p '!' root", # disable root password login
             "sync"
         ]
     }

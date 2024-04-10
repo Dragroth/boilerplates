@@ -1,4 +1,4 @@
-# Arch Linux
+# Rocky Linux
 # ---
 # Packer Template to create Rocky 9 on Proxmox
 
@@ -30,7 +30,7 @@ variable "proxmox_api_token_secret" {
 # VM variables
 variable "iso_file" {
     type = string
-    default = "local:iso/archlinux-x86_64.iso"
+    default = "local:iso/Rocky-9.3-x86_64-minimal.iso"
 }
  
 variable "iso_url" {
@@ -91,21 +91,6 @@ variable "disk_size" {
 variable "swap_size" {
     type = string
     default = "4G"
-}
-
-variable "country" {
-    type = string
-    default = "country=US"
-}
-
-variable "timezone" {
-    type = string
-    default = "America/Los_Angeles"
-}
-
-variable "language" {
-    type = string
-    default = "en_US.UTF-8"
 }
 
 variable "optional_packages" {
@@ -194,10 +179,9 @@ build {
             "rm -f /etc/machine-id /var/lib/dbus/machine-id",
             "dbus-uuidgen --ensure=/etc/machine-id",
             "dbus-uuidgen --ensure",
-            "timedatectl set-timezone ${var.timezone}",
             "cloud-init clean",
             "/usr/bin/pacman -Scc --noconfirm",
-            "usermod -p '!' root"
+            "usermod -p '!' root",
             "sync"
         ]
     }
