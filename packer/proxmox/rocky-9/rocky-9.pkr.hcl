@@ -98,7 +98,7 @@ variable "optional_packages" {
     default = "vim"
 }
 
-source "proxmox-iso" "arch" {
+source "proxmox-iso" "rocky-9" {
 
     # Proxmox Connection Settings
     proxmox_url = var.proxmox_api_url
@@ -109,14 +109,12 @@ source "proxmox-iso" "arch" {
     # VM General Settings
     node = var.proxmox_node
     vm_id = var.vm_id
-    vm_name = "arch"
+    vm_name = "rocky-9"
     template_description = "Built from ${basename(var.iso_file)} on ${formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())}"
     cores = var.cores
     memory = var.memory
     cpu_type = var.cpu_type
     qemu_agent = true
-    bios = "ovmf"
-    machine = "q35"
     
     efi_config {
         efi_storage_pool = var.storage_pool
@@ -161,17 +159,7 @@ source "proxmox-iso" "arch" {
 
 build {
     name = "arch"
-    sources = ["source.proxmox-iso.arch"]
-
-    provisioner "file" {
-        destination = "/etc/cloud/cloud.cfg"
-        source = "files/cloud.cfg"
-    }
-        
-    provisioner "file" {
-        destination = "/etc/cloud/99-pve.cfg"
-        source = "files/99-pve.cfg"
-    }
+    sources = ["source.proxmox-iso.rocky-9"]
 
     provisioner "shell" {
         inline = [

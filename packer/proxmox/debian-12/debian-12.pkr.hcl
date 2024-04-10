@@ -178,6 +178,7 @@ build {
             "rm -f /etc/machine-id /var/lib/dbus/machine-id",
             "dbus-uuidgen --ensure=/etc/machine-id",
             "dbus-uuidgen --ensure",
+            "sudo passwd -d root", # disable root password login
             "apt-get -y autoremove --purge",
             "apt-get -y clean",
             "apt-get -y autoclean",

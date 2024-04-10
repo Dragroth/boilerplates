@@ -182,6 +182,7 @@ build {
             "sudo apt-get -y clean",
             "sudo apt-get -y autoclean",
             "sudo cloud-init clean",
+            "sudo passwd -d root", # disable root password login
             "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg",
             "sudo rm -f /etc/netplan/00-installer-config.yaml",
             "sudo sync"

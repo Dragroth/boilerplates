@@ -191,7 +191,7 @@ build {
             "dbus-uuidgen --ensure",
             "cloud-init clean",
             "/usr/bin/pacman -Scc --noconfirm",
-            "usermod -p '!' root", # disable root password login
+            "sudo passwd -d root", # disable root password login
             "sync"
         ]
     }
