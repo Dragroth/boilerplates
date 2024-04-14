@@ -198,8 +198,9 @@ build {
             ">/var/log/wtmp", ">/var/log/btmp",
             "rm -rf /tmp/* /var/tmp/*",
             "unset HISTFILE; rm -rf /home/*/.*history /root/.*history",
-            # Root login
+            # Login
             "sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
+            "sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config",
             "passwd -d root",
             "passwd -l root",
             # Cleaning up

@@ -45,7 +45,7 @@ pacstrap -K /mnt base linux linux-firmware
 echo "#### INSTALLING ADDITIONAL PACKAGES..."
 sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 5\nILoveCandy/g' /mnt/etc/pacman.conf
 sed -i 's/#Color/Color/g' /mnt/etc/pacman.conf
-/usr/bin/arch-chroot /mnt pacman -S --noconfirm lvm2 cloud-guest-utils cloud-init openssh networkmanager qemu-guest-agent gptfdisk syslinux pacman-contrib $OPTIONAL_PACKAGES
+/usr/bin/arch-chroot /mnt pacman -S --noconfirm git base-devel lvm2 cloud-guest-utils cloud-init openssh networkmanager qemu-guest-agent gptfdisk syslinux pacman-contrib $OPTIONAL_PACKAGES
 
 echo ">>>> UPDATING MIRRORLIST"
 curl -s "https://archlinux.org/mirrorlist/?${COUNTRY}&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | /usr/bin/arch-chroot /mnt rankmirrors -n 5 - > /mnt/etc/pacman.d/mirrorlist
