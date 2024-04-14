@@ -172,7 +172,7 @@ source "proxmox-iso" "arch" {
     boot_wait = "8s"
 
     # PACKER Autoinstall Settings
-    http_directory = "http" 
+    http_directory = "arch/http" 
     ssh_username = "root"
     ssh_password = "packer" # temporary password
     ssh_timeout = "20m"
@@ -184,14 +184,25 @@ build {
 
     provisioner "shell" {
         inline = [
+            # Arch stuff
             "timedatectl set-timezone ${var.timezone}",
+            "/usr/bin/pacman -Scc --noconfirm",
+            # Identity
             "rm /etc/ssh/ssh_host_*",
             "rm -f /etc/machine-id /var/lib/dbus/machine-id",
             "dbus-uuidgen --ensure=/etc/machine-id",
             "dbus-uuidgen --ensure",
             "cloud-init clean",
-            "/usr/bin/pacman -Scc --noconfirm",
-            "sudo passwd -d root", # disable root password login
+            "rm -f /var/run/utmp",
+            ">/var/log/lastlog",
+            ">/var/log/wtmp", ">/var/log/btmp",
+            "rm -rf /tmp/* /var/tmp/*",
+            "unset HISTFILE; rm -rf /home/*/.*history /root/.*history",
+            # Root login
+            "sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
+            "passwd -d root",
+            "passwd -l root",
+            # Cleaning up
             "sync"
         ]
     }
