@@ -24,9 +24,7 @@ autoinstall:
     users:
       - name: ubuntu
         groups: [adm, sudo]
+        passwd: "$1$djB9xqY5$KZDNW8PqS82zasqjHjqQ91"
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-        ssh_authorized_keys:
-          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMNknZMt1Q8oPa5rzXM7zo5OV7LjMGB1FZm2MaT+nXCh gkk@gkk-pc
-          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPDrRX2T9XSKvtw4Zv91fi9ZJvSmqYkfoSqCuRsO92D6 arch@tool

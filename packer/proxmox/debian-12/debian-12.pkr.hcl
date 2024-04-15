@@ -124,7 +124,7 @@ source "proxmox-iso" "debian-12" {
     }
 
     # ISO file
-    iso_url = var.iso_url
+    iso_file = var.iso_file
     iso_checksum = var.iso_checksum
     iso_storage_pool = "local"
     unmount_iso = true
@@ -160,7 +160,7 @@ source "proxmox-iso" "debian-12" {
     boot_wait = "5s"
 
     # PACKER Autoinstall Settings
-    http_directory = "http" 
+    http_directory = "debian-12/http" 
     ssh_username = "root"
     ssh_password = "packer" # temporary password
     ssh_timeout = "20m"
@@ -172,28 +172,28 @@ build {
 
     provisioner "shell" {
         inline = [
-            "apt-get install ${var.optional_packages}"
-            "timedatectl set-timezone ${var.timezone}",
-            "rm /etc/ssh/ssh_host_*",
-            "rm -f /etc/machine-id /var/lib/dbus/machine-id",
-            "dbus-uuidgen --ensure=/etc/machine-id",
-            "dbus-uuidgen --ensure",
-            "sudo passwd -d root", # disable root password login
+            # Debian stuff
+            "apt-get -y install ${var.optional_packages}",
             "apt-get -y autoremove --purge",
             "apt-get -y clean",
             "apt-get -y autoclean",
+            # Identity
+            "rm -f /etc/machine-id /var/lib/dbus/machine-id",
+            "dbus-uuidgen --ensure=/etc/machine-id",
+            "dbus-uuidgen --ensure",
             "cloud-init clean",
+            "rm -f /var/run/utmp",
+            ">/var/log/lastlog",
+            ">/var/log/wtmp", ">/var/log/btmp",
+            "rm -rf /tmp/* /var/tmp/*",
+            "unset HISTFILE; rm -rf /home/*/.*history /root/.*history",
+            # Login
+            "sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
+            "sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config",
+            "passwd -d root",
+            "passwd -l root",
+            # Cleaning up
             "sync"
         ]
-    }
-
-    provisioner "file" {
-        destination = "/etc/cloud/cloud.cfg"
-        source = "files/cloud.cfg"
-    }
-    
-    provisioner "file" {
-        destination = "/etc/cloud/99-pve.cfg"
-        source = "files/99-pve.cfg"
     }
 }

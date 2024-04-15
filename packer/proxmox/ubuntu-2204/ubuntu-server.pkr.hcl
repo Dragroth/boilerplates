@@ -124,7 +124,7 @@ source "proxmox-iso" "ubuntu-server" {
     }
 
     # ISO file
-    iso_url = var.iso_url
+    iso_file = var.iso_file
     iso_checksum = var.iso_checksum
     iso_storage_pool = "local"
     unmount_iso = true
@@ -161,10 +161,10 @@ source "proxmox-iso" "ubuntu-server" {
     boot_wait = "5s"
 
     # PACKER Autoinstall Settings
-    http_directory = "http" 
+    http_directory = "ubuntu-2204/http" 
     ssh_username = "ubuntu"
-    ssh_private_key_file = "~/.ssh/id_ed25519"
-    # ssh_password = "packer" # temporary password
+    # ssh_private_key_file = "~/.ssh/id_ed25519"
+    ssh_password = "packer" # temporary password
     ssh_timeout = "20m"
 }
 
@@ -174,32 +174,29 @@ build {
 
     provisioner "shell" {
         inline = [
+            # Ubuntu stuff
             "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
-            "apt-get install ${var.optional_packages}"
-            "sudo rm /etc/ssh/ssh_host_*",
-            "sudo truncate -s 0 /etc/machine-id",
+            "sudo apt-get -y install ${var.optional_packages}",
             "sudo apt-get -y autoremove --purge",
             "sudo apt-get -y clean",
             "sudo apt-get -y autoclean",
-            "sudo cloud-init clean",
-            "sudo passwd -d root", # disable root password login
             "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg",
             "sudo rm -f /etc/netplan/00-installer-config.yaml",
-            "sudo sync"
+            # Identity
+            "sudo rm -f /etc/machine-id /var/lib/dbus/machine-id",
+            "sudo dbus-uuidgen --ensure=/etc/machine-id",
+            "sudo dbus-uuidgen --ensure",
+            "sudo cloud-init clean",
+            # Login
+            "sudo rm -f /etc/ssh/sshd_config.d/50-cloud-init.conf"
+            "sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
+            "sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config",
+            "sudo passwd -d root",
+            "sudo passwd -d ubuntu",
+            "sudo passwd -l root",
+            # Cleaning up
+            "sync"
         ]
     }
 
-    provisioner "file" {
-        source = "files/cloud.cfg"
-        destination = "/tmp/cloud.cfg"
-    }
-
-    provisioner "file" {
-        source = "files/99-pve.cfg"
-        destination = "/tmp/99-pve.cfg"
-    }
-
-    provisioner "shell" {
-        inline = [ "sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg; sudo cp /tmp/cloud.cfg /etc/cloud/cloud.cfg" ]
-    }
 }

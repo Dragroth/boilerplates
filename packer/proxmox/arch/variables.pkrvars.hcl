@@ -20,4 +20,4 @@ swap_size       = "2G"
 country         = "country=PL" # used for mirrorlist
 timezone        = "Europe/Warsaw"
 language        = "en_US.UTF-8"
-optional_packages = "vim intel-ucode less nano neofetch man"
+optional_packages = "vim less nano neofetch man"
