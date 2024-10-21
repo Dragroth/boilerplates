@@ -60,7 +60,6 @@ echo ">>>> MODYFING MKINITCPIO..."
 /usr/bin/arch-chroot /mnt mkinitcpio -p linux
 
 echo ">>>> ENABLING SERVICES..."
-/usr/bin/arch-chroot /mnt systemctl enable cloud-init
 /usr/bin/arch-chroot /mnt systemctl enable NetworkManager
 /usr/bin/arch-chroot /mnt systemctl enable sshd
 
