@@ -76,10 +76,8 @@ FILE="/mnt/boot/loader/entries/arch.conf"
 UUID=$(blkid | grep root | cut -d '"' -f 2)
 echo "title   Arch Linux" >> "$FILE"
 echo "linux   /vmlinuz-linux" >> "$FILE"
-echo "initrd  /intel-ucode.img" >> "$FILE"
 echo "initrd  /initramfs-linux.img" >> "$FILE"
 echo "options root=/dev/vg0/lv-root rw" >> "$FILE"
-
 
 echo ">>>> INSTALLATION COMPLETE, REBOOTING..."
 sleep 3
