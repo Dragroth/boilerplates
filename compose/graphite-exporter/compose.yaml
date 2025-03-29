@@ -1,0 +1,16 @@
+services:
+    graphite-exporter:
+        container_name: graphite-exporter
+        ports:
+            - 9108:9108
+            - 9109:9109
+            - 9109:9109/udp
+        networks:
+            - frontend
+        volumes:
+            - ./graphite_mapping.conf:/tmp/graphite_mapping.conf
+        image: prom/graphite-exporter
+        command: --graphite.mapping-config=/tmp/graphite_mapping.conf
+networks:
+    frontend:
+        external: true

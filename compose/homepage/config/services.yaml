@@ -1,0 +1,62 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Infrastructure:
+    - pve-artemis:
+        href: https://pve-artemis.ntcl.pl:8006/
+        description: pve-artemis
+        icon: proxmox
+        siteMonitor: https://pve-artemis.ntcl.pl:8006/
+        widget:
+            type: proxmox
+            url: https://pve-artemis.ntcl.pl:8006
+            username: prometheus@pam!homepage
+            password: d3d2ae9c-469c-420c-80e4-2907bffbe236
+    # - prod-01:
+    #     description: prod-01
+    #     icon: traefik
+    #     href: http://prod-01.ntcl.pl:8080
+    #     widget:
+    #         type: traefik
+    #         url: http://prod-01.ntcl.pl:8080
+    # - mon-01:
+    #     description: mon-01
+    #     icon: traefik
+    #     href: http://mon-01.ntcl.pl:8080
+    #     widget:
+    #         type: traefik
+    #         url: http://mon-01.ntcl.pl:8080
+
+- Monitoring:
+    - Grafana:
+        href: https://grafana.ntcl.pl/
+        description: Monitoring dashboard
+        icon: grafana
+        server: mon-01.ntcl.pl
+        widget:
+            type: grafana
+            url: https://grafana.ntcl.pl
+            username: admin
+            password: admin
+    - Prometheus:
+        href: https://prometheus.ntcl.pl/
+        description: Monitoring system
+        icon: prometheus
+        widget:
+            type: prometheus
+            url: https://prometheus.ntcl.pl
+
+- Utilities:
+    - Vaultwarden:
+        href: https://vw.ntcl.pl/
+        description: Password Manager
+        icon: si-vaultwarden-#FFFFFF
+        server: prod-01.ntcl.pl
+        container: vaultwarden
+    - Git:
+        href: https://git.ntcl.pl/
+        description: Gitea version management system
+        icon: gitea
+        server: prod-01.ntcl.pl
+        container: gitea

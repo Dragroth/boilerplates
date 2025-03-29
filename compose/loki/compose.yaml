@@ -1,0 +1,18 @@
+services:
+  loki:
+    command: -config.file=/etc/loki/loki-config.yml
+    container_name: loki
+    image: grafana/loki:latest
+    networks:
+      - frontend
+    ports:
+    - protocol: tcp
+      published: 3100
+      target: 3100
+    restart: unless-stopped
+    volumes:
+    - ./loki-config.yml:/etc/loki/loki-config.yml
+
+networks:
+  frontend:
+    external: true

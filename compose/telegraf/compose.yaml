@@ -1,0 +1,14 @@
+services:
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    networks:
+      - frontend
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+    restart: unless-stopped
+    ports:
+      - 8094:8094
+networks:
+  frontend:
+    external: true

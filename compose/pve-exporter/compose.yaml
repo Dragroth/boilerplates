@@ -1,0 +1,18 @@
+services:
+  pve-exporter:
+    image: prompve/prometheus-pve-exporter
+    container_name: pve-exporter
+    restart: unless-stopped
+    ports:
+      - 9221:9221
+    networks:
+      - frontend
+    volumes:
+      - ./pve/pve.yml:/etc/prometheus/pve.yml
+    environment:
+      - PVE_USER=${PVE_USER}
+      - PVE_TOKEN_NAME=${PVE_TOKEN_NAME}
+      - PVE_TOKEN_VALUE=${PVE_TOKEN_VALUE}
+networks:
+  frontend:
+    external: true

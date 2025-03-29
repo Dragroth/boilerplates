@@ -1,0 +1,18 @@
+name: drawio
+services:
+    drawio:
+        image: ${DRAWIO_TAG}
+        restart: unless-stopped
+        stdin_open: true
+        tty: true
+        container_name: drawio
+        ports:
+            - 8888:8080
+            - 8443:8443
+        networks:
+          - frontend
+        volumes:
+          - ./data:/data
+networks:
+  frontend:
+    external: true

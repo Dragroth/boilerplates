@@ -1,0 +1,21 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    environment:
+      PUID: 0
+      PGID: 0
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homepage.entrypoints=web
+      - traefik.http.routers.homepage.rule=Host(`${HOMEPAGE_HOSTNAME}`)
+      - traefik.docker.network=frontend
+    networks:
+      - frontend
+    volumes:
+      - ./config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+networks:
+  frontend:
+    external: true

@@ -1,0 +1,14 @@
+services:
+  mktxp:
+    container_name: mktxp
+    image: ghcr.io/akpw/mktxp:latest
+    user: root
+    volumes:
+      - './config/:/root/mktxp/'
+    networks:
+      - frontend
+    restart: unless-stopped  
+
+networks:
+  frontend:
+    external: true

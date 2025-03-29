@@ -1,0 +1,14 @@
+services:
+    influxdb:
+        container_name: influxdb
+        networks:
+            - frontend
+        ports:
+            - 8086:8086
+        volumes:
+            - ../../volumes/influxdb/data:/var/lib/influxdb2
+            - ../../volumes/influxdb/config:/etc/influxdb2
+        image: influxdb:2
+networks:
+  frontend:
+    external: true

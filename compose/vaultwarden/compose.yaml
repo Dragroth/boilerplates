@@ -1,0 +1,30 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    container_name: vaultwarden
+    networks:
+      - frontend
+    volumes:
+      -  ~/docker/volumes/vaultwarden:/data
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f 
+        - http://localhost:80/
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.vaultwarden.rule=Host(`${VW_HOSTNAME}`)
+      - traefik.http.routers.vaultwarden.entrypoints=websecure
+      - traefik.http.routers.vaultwarden.tls=true
+      - traefik.http.routers.vaultwarden.tls.certresolver=cfresolver
+      - traefik.http.routers.vaultwarden.middlewares=compresstraefik
+      - traefik.http.middlewares.compresstraefik.compress=true
+networks:
+  frontend:
+    external: true
